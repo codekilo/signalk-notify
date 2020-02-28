@@ -1,0 +1,14 @@
+{
+  "name": "signalk-notify",
+  "version": "1.0.0",
+  "description": "simple package to send notifications when an event is triggered",
+  "main": "index.js",
+  "keywords": [
+    "signalk-node-server-plugin"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
