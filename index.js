@@ -12,21 +12,23 @@ module.exports = function(app) {
     app.debug('Plugin started');
     plugin.options = options;
 
-    listen(options.event, options.message, app);
+    options.notifications.forEach(option => {
+      listen(option.event, option.message);
+    });
 
     app.setProviderStatus('Running');
 
 
   };
 
-  function listen(event, message, eventEmitter) {
+  function listen(event, message) {
     let _notify = function(event) {
-      console.log(JSON.stringify(event, null, 2));
+      // console.log(JSON.stringify(event, null, 2));
       notify(message);
     };
-    eventEmitter.on(event, _notify);
+    app.on(event, _notify);
     unsubscribes.push(() => {
-      eventEmitter.removeListener(event, _notify);
+      app.removeListener(event, _notify);
     });
   }
 
@@ -46,15 +48,25 @@ module.exports = function(app) {
     title: PLUGIN_NAME,
     type: 'object',
     properties: {
-      event: {
-        type: 'string',
-        title: 'event'
-      },
-      message: {
-        type: 'string',
-        title: 'message'
+      notifications: {
+        type: 'array',
+        title: 'notifications',
+        items: {
+          type: 'object',
+          properties: {
+            event: {
+              type: 'string',
+              title: 'event'
+            },
+            message: {
+              type: 'string',
+              title: 'message'
+            }
+          }
+        }
       }
     }
+
   };
 
   return plugin;
