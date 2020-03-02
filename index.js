@@ -12,28 +12,52 @@ module.exports = function(app) {
     app.debug('Plugin started');
     plugin.options = options;
 
-    options.notifications.forEach(option => {
-      listen(option.event, option.message);
-    });
+    options.notifications.forEach(listen);
 
     app.setProviderStatus('Running');
 
 
   };
 
-  function listen(event, message) {
+  function listen(option) {
+    console.log(JSON.stringify(option, null, 2));
     let _notify = function(event) {
       // console.log(JSON.stringify(event, null, 2));
-      notify(message);
-    };
-    app.on(event, _notify);
-    unsubscribes.push(() => {
-      app.removeListener(event, _notify);
-    });
-  }
+      if (option.method == 'LOG') {
+        console.log(new Date(), option.message);
+      } else if (option.method == 'DEBUG') {
+        app.debug(option.message);
 
-  function notify(message) {
-    console.log(new Date(), message);
+      } else if (option.method == 'NOTIFICATION') {
+        let value = {
+          method: ['sound'],
+          state: 'alert',
+          message: option.message
+
+        };
+        if (event.type == 'FALLING') {
+          value = null;
+        }
+        let notification = {
+          context: event.value.context,
+          updates: [{
+            $source: PLUGIN_ID,
+            timestamp: event.value.updates[0].timestamp,
+            values: [{
+              path: `notifications.${event.event}`,
+              value: value
+            }]
+          }]
+        };
+        app.handleMessage(PLUGIN_ID, notification);
+        app.debug(notification);
+      }
+
+    };
+    app.on(option.event, _notify);
+    unsubscribes.push(() => {
+      app.removeListener(option.event, _notify);
+    });
   }
 
 
@@ -61,6 +85,13 @@ module.exports = function(app) {
             message: {
               type: 'string',
               title: 'message'
+            },
+            method: {
+              type: 'string',
+              title: 'method',
+              enum: ['LOG', 'DEBUG', 'NOTIFICATION'],
+              enumNames: ['write to log', 'write to debug ', 'create notification'],
+              default: 'LOG'
             }
           }
         }
