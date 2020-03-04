@@ -20,7 +20,7 @@ module.exports = function(app) {
   };
 
   function listen(option) {
-    console.log(JSON.stringify(option, null, 2));
+    // console.log(JSON.stringify(option, null, 2));
     let _notify = function(event) {
       // console.log(JSON.stringify(event, null, 2));
       if (option.method == 'LOG') {

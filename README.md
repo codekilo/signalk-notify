@@ -7,8 +7,8 @@ This package is designed to send a notification when an event occurs on the serv
 To install this package clone it from git and run npm link.
 
 ```
-git clone https://github.com/codekilo/signalk-notification.git
-cd signalk-notification
+git clone https://github.com/codekilo/signalk-notify.git
+cd signalk-notify
 sudo npm link
 ```
 
@@ -16,7 +16,7 @@ Then go to the SignalK configuration directory (probably `~/.signalk`)  and link
 
 ```
 $ cd .signalk 
-$ npm link signalk-notification
+$ npm link signalk-notify
 ```
 
 ## configuration
