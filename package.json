@@ -1,5 +1,5 @@
 {
-  "name": "signalk-notify",
+  "name": "@codekilo/signalk-notify",
   "version": "1.0.0",
   "description": "simple package to send notifications when an event is triggered",
   "main": "index.js",
@@ -9,6 +9,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Albert Smit <albertsmit93@gmail.com>",
   "license": "MIT"
 }
